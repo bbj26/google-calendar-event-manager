@@ -7,6 +7,7 @@ import EditEventModal from "../EditEventModal/index";
 import "./styles.css";
 import AddEventModal from "../AddEventModal";
 import { createCalendarEvent } from "../../api/auth";
+import { showToastifySuccess } from "../../utils/toastify";
 
 interface CalendarEventsProps {
   events: CalendarEvent[];
@@ -52,6 +53,7 @@ const CalendarEvents: React.FC<CalendarEventsProps> = ({ events }) => {
   const handleSaveNewEvent = (newEvent: CalendarEvent) => {
     createCalendarEvent(newEvent);
     setEventList([...eventList, { ...newEvent, id: `${Date.now()}` }]);
+    showToastifySuccess("Event successfully created!");
   };
 
   return (

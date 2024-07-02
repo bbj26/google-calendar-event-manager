@@ -4,10 +4,10 @@ import CalendarEvents from "../../components/CalendarEventsList/index";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
 import "./styles.css";
+import { showToastifyError } from "../../utils/toastify";
 
 function Home() {
   const [events, setEvents] = useState([]);
-  const [eventsError, setEventsError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ function Home() {
         const response = await getCalendarEvents();
         setEvents(response);
       } catch (error: any) {
-        setEventsError(error.message);
+        showToastifyError(error);
         setTimeout(() => {
           navigate("/login");
         }, 2000);
@@ -35,7 +35,6 @@ function Home() {
       ) : (
         <p>Loading events</p>
       )}
-      {eventsError && <p>{eventsError}</p>}
     </div>
   );
 }
