@@ -11,7 +11,7 @@ const router = Router();
 
 router.get("/", checkAuth, getEvents);
 router.post("/create-event", checkAuth, createCalendarEvent);
-router.post("/update-event/:eventId", checkAuth, updateCalendarEvent);
-router.post("/delete-event/:eventId", checkAuth, deleteCalendarEvent);
+router.put("/update-event/:eventId", checkAuth, updateCalendarEvent);
+router.delete("/delete-event/:eventId", checkAuth, deleteCalendarEvent);
 
 export default router;

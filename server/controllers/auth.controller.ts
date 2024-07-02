@@ -4,7 +4,7 @@ import { config } from "../config";
 import axios from "axios";
 
 const cookieOptions: CookieOptions = {
-  maxAge: 900000, // 15 mins
+  maxAge: 1800000, // 30 mins
   httpOnly: true,
   domain: config.SERVER_DOMAIN,
   path: "/",
