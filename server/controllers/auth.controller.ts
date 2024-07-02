@@ -30,13 +30,9 @@ export const handleGoogleRedirect = async (req: Request, res: Response) => {
   }
 
   const { tokens } = await oauth2Client.getToken(code);
-  console.log({ tokens });
-
   oauth2Client.setCredentials(tokens);
 
   const { id_token, access_token } = tokens;
-  console.log({ id_token, access_token });
-
   res.cookie("access_token", access_token, cookieOptions);
   res.cookie("id_token", id_token, cookieOptions);
 
