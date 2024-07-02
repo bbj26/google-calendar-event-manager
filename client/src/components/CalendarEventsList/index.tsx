@@ -6,7 +6,11 @@ import DeleteEventModal from "../DeleteEventModal/index";
 import EditEventModal from "../EditEventModal/index";
 import "./styles.css";
 import AddEventModal from "../AddEventModal";
-import { createCalendarEvent } from "../../api/auth";
+import {
+  createCalendarEvent,
+  deleteCalendarEvent,
+  updateCalendarEvent,
+} from "../../api/calendar";
 import { showToastifySuccess } from "../../utils/toastify";
 
 interface CalendarEventsProps {
@@ -38,16 +42,18 @@ const CalendarEvents: React.FC<CalendarEventsProps> = ({ events }) => {
 
   const handleConfirmDelete = () => {
     if (selectedEvent) {
-      console.log("Deleting event:", selectedEvent.id);
+      deleteCalendarEvent(selectedEvent.id);
       setShowDeleteModal(false);
       setSelectedEvent(null);
+      showToastifySuccess("Event successfully deleted!");
     }
   };
 
   const handleUpdateEvent = (updatedEvent: CalendarEvent) => {
-    console.log("Updating event:", updatedEvent);
+    updateCalendarEvent(updatedEvent.id, updatedEvent);
     setShowEditModal(false);
     setSelectedEvent(null);
+    showToastifySuccess("Event successfully updated!");
   };
 
   const handleSaveNewEvent = (newEvent: CalendarEvent) => {

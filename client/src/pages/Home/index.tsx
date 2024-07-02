@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getCalendarEvents } from "../../api/auth";
+import { getCalendarEvents } from "../../api/calendar";
 import CalendarEvents from "../../components/CalendarEventsList/index";
 import { useNavigate } from "react-router-dom";
 import { Typography } from "@mui/material";
