@@ -1,8 +1,6 @@
 import { google } from "googleapis";
 import { oauth2Client } from "./auth.service";
-import { config } from "../config/index";
 
-const { API_KEY } = config;
 const calendar = google.calendar({ version: "v3", auth: oauth2Client });
 
 export const listEvents = async () => {
@@ -14,4 +12,13 @@ export const listEvents = async () => {
     orderBy: "startTime",
   });
   return response.data.items || [];
+};
+
+export const createEvent = async (event: any) => {
+  const response = await calendar.events.insert({
+    auth: oauth2Client,
+    calendarId: "primary",
+    requestBody: event,
+  });
+  return response.data;
 };
