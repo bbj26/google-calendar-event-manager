@@ -1,21 +1,25 @@
 import React, { useState } from "react";
 import { CalendarEvent } from "../../types";
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import EventCard from "../EventCard/index";
 import DeleteEventModal from "../DeleteEventModal/index";
 import EditEventModal from "../EditEventModal/index";
 import "./styles.css";
+import AddEventModal from "../AddEventModal";
+import { createCalendarEvent } from "../../api/auth";
 
 interface CalendarEventsProps {
   events: CalendarEvent[];
 }
 
 const CalendarEvents: React.FC<CalendarEventsProps> = ({ events }) => {
+  const [showAddModal, setShowAddModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
     null
   );
+  const [eventList, setEventList] = useState<CalendarEvent[]>(events);
 
   const handleDelete = (event: CalendarEvent) => {
     setSelectedEvent(event);
@@ -25,6 +29,10 @@ const CalendarEvents: React.FC<CalendarEventsProps> = ({ events }) => {
   const handleEdit = (event: CalendarEvent) => {
     setSelectedEvent(event);
     setShowEditModal(true);
+  };
+
+  const handleAdd = () => {
+    setShowAddModal(true);
   };
 
   const handleConfirmDelete = () => {
@@ -41,8 +49,16 @@ const CalendarEvents: React.FC<CalendarEventsProps> = ({ events }) => {
     setSelectedEvent(null);
   };
 
+  const handleSaveNewEvent = (newEvent: CalendarEvent) => {
+    createCalendarEvent(newEvent);
+    setEventList([...eventList, { ...newEvent, id: `${Date.now()}` }]);
+  };
+
   return (
     <div>
+      <Button variant="contained" color="primary" onClick={handleAdd}>
+        Add Event
+      </Button>
       <div className="scrollable-container">
         <Grid container spacing={2}>
           {events.map((event) => (
@@ -72,6 +88,12 @@ const CalendarEvents: React.FC<CalendarEventsProps> = ({ events }) => {
           />
         </>
       )}
+
+      <AddEventModal
+        open={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSave={handleSaveNewEvent}
+      />
     </div>
   );
 };

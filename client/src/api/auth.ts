@@ -1,4 +1,5 @@
 import axios from "axios";
+import { handleApiError } from "../utils/errorHandlers";
 
 export const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_SERVER_ENDPOINT,
@@ -22,13 +23,17 @@ export const isAuthenticated = async (): Promise<boolean> => {
 export const getCalendarEvents = async () => {
   try {
     const response = await axiosClient.get("/calendar");
-    console.log(response.data);
     return response.data;
   } catch (error: any) {
-    console.error(error);
-    if (error.response.status === 401) {
-      throw new Error(error.response.data);
-    }
-    throw new Error(error.message);
+    handleApiError(error);
+  }
+};
+
+export const createCalendarEvent = async (event: any) => {
+  try {
+    const response = await axiosClient.post("/calendar/create-event", event);
+    return response.data;
+  } catch (error: any) {
+    handleApiError(error);
   }
 };
