@@ -7,6 +7,8 @@ const requiredEnvVars = [
   "CLIENT_SECRET",
   "REDIRECT_URL",
   "API_KEY",
+  "CLIENT_APP_URL",
+  "SERVER_DOMAIN",
 ];
 
 requiredEnvVars.forEach((envVar) => {
@@ -22,4 +24,5 @@ export const config = {
   API_KEY: process.env.API_KEY,
   SERVER_PORT: process.env.PORT || 8000,
   CLIENT_APP_URL: process.env.CLIENT_APP_URL,
+  SERVER_DOMAIN: process.env.SERVER_DOMAIN,
 };

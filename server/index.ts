@@ -2,8 +2,9 @@ import express, { Request, Response } from "express";
 import { config } from "./config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import router from "./routers/index.router";
 
-const app = express();
+export const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
@@ -20,6 +21,10 @@ app.get("/", (req: Request, res: Response) => {
   res.status(200).send("welcome to server");
 });
 
+app.use(router);
+
 app.listen(config.SERVER_PORT, () => {
-  console.log(`Server listening on port ${config.SERVER_PORT}`);
+  console.log(
+    `Server listening on http://${config.SERVER_DOMAIN}:${config.SERVER_PORT}`
+  );
 });
