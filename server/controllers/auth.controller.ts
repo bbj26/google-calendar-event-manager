@@ -1,6 +1,7 @@
 import { CookieOptions, Request, Response } from "express";
 import { oauth2Client } from "../services/auth.service";
 import { config } from "../config";
+import axios from "axios";
 
 const cookieOptions: CookieOptions = {
   maxAge: 900000, // 15 mins
@@ -38,4 +39,25 @@ export const handleGoogleRedirect = async (req: Request, res: Response) => {
 
   // redirect back to client
   res.redirect(`${config.CLIENT_APP_URL}`);
+};
+
+export const isAuthenticated = async (req: Request, res: Response) => {
+  const accessToken = req.cookies.access_token;
+  if (!accessToken) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    const response = await axios.get(
+      `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
+    );
+
+    if (response.data.audience === config.CLIENT_ID) {
+      res.status(200).json({ message: "Authorized", user: response.data });
+    } else {
+      res.status(401).json({ message: "Unauthorized" });
+    }
+  } catch (error) {
+    res.status(401).json({ message: "Unauthorized" });
+  }
 };

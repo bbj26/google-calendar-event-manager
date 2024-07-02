@@ -10,6 +10,15 @@ export const axiosClient = axios.create({
   },
 });
 
+export const isAuthenticated = async (): Promise<boolean> => {
+  try {
+    const response = await axiosClient.get("/google/verify");
+    return response.status === 200;
+  } catch (error: any) {
+    return false;
+  }
+};
+
 export const getCalendarEvents = async () => {
   try {
     const response = await axiosClient.get("/calendar");
