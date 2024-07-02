@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CalendarEvent } from "../../types";
 import { Button, Grid } from "@mui/material";
-import EventCard from "../EventCard/index";
-import DeleteEventModal from "../DeleteEventModal/index";
-import EditEventModal from "../EditEventModal/index";
-import "./styles.css";
+import EventCard from "../EventCard";
+import DeleteEventModal from "../DeleteEventModal";
+import EditEventModal from "../EditEventModal";
 import AddEventModal from "../AddEventModal";
 import {
   createCalendarEvent,
   deleteCalendarEvent,
   updateCalendarEvent,
 } from "../../api/calendar";
-import { showToastifySuccess } from "../../utils/toastify";
+import { showToastifySuccess, showToastifyError } from "../../utils/toastify";
+import "./styles.css";
 
 interface CalendarEventsProps {
   events: CalendarEvent[];
@@ -40,26 +40,52 @@ const CalendarEvents: React.FC<CalendarEventsProps> = ({ events }) => {
     setShowAddModal(true);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (selectedEvent) {
-      deleteCalendarEvent(selectedEvent.id);
-      setShowDeleteModal(false);
-      setSelectedEvent(null);
-      showToastifySuccess("Event successfully deleted!");
+      try {
+        await deleteCalendarEvent(selectedEvent.id);
+        setEventList(
+          eventList.filter((event) => event.id !== selectedEvent.id)
+        );
+        setShowDeleteModal(false);
+        setSelectedEvent(null);
+        showToastifySuccess("Event successfully deleted!");
+      } catch (error) {
+        showToastifyError("Failed to delete event.");
+      }
     }
   };
 
-  const handleUpdateEvent = (updatedEvent: CalendarEvent) => {
-    updateCalendarEvent(updatedEvent.id, updatedEvent);
-    setShowEditModal(false);
-    setSelectedEvent(null);
-    showToastifySuccess("Event successfully updated!");
+  const handleUpdateEvent = async (updatedEvent: CalendarEvent) => {
+    try {
+      await updateCalendarEvent(updatedEvent.id, updatedEvent);
+      setEventList(
+        eventList.map((event) =>
+          event.id === updatedEvent.id ? updatedEvent : event
+        )
+      );
+      setShowEditModal(false);
+      setSelectedEvent(null);
+      showToastifySuccess("Event successfully updated!");
+    } catch (error) {
+      showToastifyError("Failed to update event.");
+    }
   };
 
-  const handleSaveNewEvent = (newEvent: CalendarEvent) => {
-    createCalendarEvent(newEvent);
-    setEventList([...eventList, { ...newEvent, id: `${Date.now()}` }]);
-    showToastifySuccess("Event successfully created!");
+  const handleSaveNewEvent = async (newEvent: CalendarEvent) => {
+    try {
+      const createdEvent = await createCalendarEvent(newEvent);
+      const updatedEventList = [...eventList, createdEvent].sort((a, b) => {
+        return (
+          new Date(a.start.date).getTime() - new Date(b.start.date).getTime()
+        );
+      });
+      setEventList(updatedEventList);
+      setShowAddModal(false);
+      showToastifySuccess("Event successfully created!");
+    } catch (error) {
+      showToastifyError("Failed to create event.");
+    }
   };
 
   return (
@@ -69,7 +95,7 @@ const CalendarEvents: React.FC<CalendarEventsProps> = ({ events }) => {
       </Button>
       <div className="scrollable-container">
         <Grid container spacing={2}>
-          {events.map((event) => (
+          {eventList.map((event) => (
             <Grid item xs={12} sm={6} md={4} key={event.id}>
               <EventCard
                 event={event}
