@@ -22,3 +22,23 @@ export const createEvent = async (event: any) => {
   });
   return response.data;
 };
+
+export const updateEvent = async (eventId: string, updatedEventBody: any) => {
+  const response = await calendar.events.update({
+    auth: oauth2Client,
+    calendarId: "primary",
+    eventId: eventId,
+    requestBody: updatedEventBody,
+  });
+  return response.data;
+};
+
+export const deleteEvent = async (eventId: string) => {
+  const response = await calendar.events.delete({
+    auth: oauth2Client,
+    calendarId: "primary",
+    eventId,
+  });
+
+  return response.data;
+};
