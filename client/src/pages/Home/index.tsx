@@ -28,7 +28,9 @@ function Home() {
 
   return (
     <div className="homepage-container">
-      <Typography variant="h4">Google Calendar Events Manager</Typography>
+      <Typography variant="h5" m="30px auto">
+        Calendar Events Manager
+      </Typography>
 
       {events.length ? (
         <CalendarEvents events={events} />

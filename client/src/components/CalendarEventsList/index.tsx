@@ -89,9 +89,14 @@ const CalendarEvents: React.FC<CalendarEventsProps> = ({ events }) => {
   };
 
   return (
-    <div>
-      <Button variant="contained" color="primary" onClick={handleAdd}>
-        Add Event
+    <div className="calendar-events-list-container">
+      <Button
+        variant="contained"
+        color="primary"
+        style={{ maxWidth: "200px" }}
+        onClick={handleAdd}
+      >
+        Create new event
       </Button>
       <div className="scrollable-container">
         <Grid container spacing={2}>
