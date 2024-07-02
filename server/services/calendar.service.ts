@@ -9,7 +9,7 @@ export const listEvents = async () => {
   const response = await calendar.events.list({
     calendarId: "primary",
     timeMin: new Date().toISOString(),
-    maxResults: 100,
+    maxResults: 50,
     singleEvents: true,
     orderBy: "startTime",
   });

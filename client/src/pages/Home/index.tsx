@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { getCalendarEvents } from "../../api/auth";
 import CalendarEvents from "../../components/CalendarEventsList/index";
 import { useNavigate } from "react-router-dom";
+import { Typography } from "@mui/material";
+import "./styles.css";
 
 function Home() {
   const [events, setEvents] = useState([]);
@@ -25,8 +27,8 @@ function Home() {
   }, [navigate]);
 
   return (
-    <div>
-      <h1>Welcome to homepage</h1>
+    <div className="homepage-container">
+      <Typography variant="h4">Google Calendar Events Manager</Typography>
 
       {events.length ? (
         <CalendarEvents events={events} />
