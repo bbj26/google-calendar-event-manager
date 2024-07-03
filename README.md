@@ -17,13 +17,13 @@ A simple application for viewing, creating, editing, and deleting events in Goog
 Clone the project
 
 ```bash
-  git clone git@github.com:bbj26/google-calendar-event-manager.git
+git clone git@github.com:bbj26/google-calendar-event-manager.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd google-calendar-event-manager
+cd google-calendar-event-manager
 ```
 
 #### Server
@@ -31,8 +31,8 @@ Go to the project directory
 Install server dependencies
 
 ```bash
-    cd server
-    npm install
+cd server
+npm install
 ```
 
 Create `.env.development` file in `server` folder and put your environment variables needed for server app to run in there. You can see server's `.env.template` for reference:
@@ -64,8 +64,8 @@ docker-compose --env-file server/.env.development -f postgres-db-compose.yml up 
 Start the server
 
 ```bash
-    cd server
-    npm run dev
+cd server
+npm run dev
 ```
 
 #### Client
@@ -73,8 +73,8 @@ Start the server
 Install client dependencies
 
 ```bash
-    cd client
-    npm install
+cd client
+npm install
 ```
 
 Create `.env` file in `client` folder and put your environment variables needed for server app to run in there. You can see server's `.env.template` for reference:
