@@ -3,6 +3,7 @@ import { config } from "./config";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import router from "./routers/index.router";
+import { connectToDatabase } from "./database";
 
 export const app = express();
 
@@ -23,8 +24,10 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use(router);
 
-app.listen(config.SERVER_PORT, () => {
-  console.log(
-    `Server listening on http://${config.SERVER_DOMAIN}:${config.SERVER_PORT}`
-  );
+connectToDatabase().then(() => {
+  app.listen(config.SERVER_PORT, () => {
+    console.log(
+      `Server listening on http://${config.SERVER_DOMAIN}:${config.SERVER_PORT}`
+    );
+  });
 });
